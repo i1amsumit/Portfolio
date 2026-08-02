@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sumit Kumar Singh | Data Analytics & Finance Portfolio</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                        accent: {
+                            cyan: '#0891b2',
+                            emerald: '#059669',
+                            amber: '#d97706',
+                            purple: '#7c3aed'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js for Data Visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #ffffff;
+            color: #0f172a;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #0891b2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .clean-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .clean-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+        }
+
+        /* Custom Scrollbar for clean theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f8fafc;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Toast notification animation */
+        @keyframes slideUp {
+            from { transform: translateY(100%) translateX(-50%); opacity: 0; }
+            to { transform: translateY(0) translateX(-50%); opacity: 1; }
+        }
+        .toast-animate {
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+<body class="bg-white text-slate-900 min-h-screen relative overflow-x-hidden antialiased">
+
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
+                    S
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-bold text-base tracking-tight leading-none text-slate-900">Sumit K. Singh</span>
+                    <span class="text-xs text-blue-600 font-medium">Data & Finance Analyst</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+                <a href="#about" class="hover:text-blue-600 transition-colors">About</a>
+                <a href="#skills" class="hover:text-blue-600 transition-colors">Skills</a>
+                <a href="#projects" class="hover:text-blue-600 transition-colors">Projects</a>
+                <a href="#experience" class="hover:text-blue-600 transition-colors">Experience</a>
+                <a href="#leadership" class="hover:text-blue-600 transition-colors">Leadership</a>
+                <a href="#contact" class="hover:text-blue-600 transition-colors">Contact</a>
+            </nav>
+
+            <!-- Action Controls -->
+            <div class="flex items-center gap-3">
+                <button onclick="openResumeModal()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition-all transform hover:-translate-y-0.5">
+                    <i class="fa-solid fa-file-arrow-down"></i> Resume
+                </button>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden w-9 h-9 rounded-xl border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-50">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div id="mobileDrawer" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-3 text-sm">
+            <a href="#about" class="block py-2 text-slate-600 hover:text-blue-600 font-medium">About</a>
+            <a href="#skills" class="block py-2 text-slate-600 hover:text-blue-600 font-medium">Skills</a>
+            <a href="#projects" class="block py-2 text-slate-600 hover:text-blue-600 font-medium">Projects</a>
+            <a href="#experience" class="block py-2 text-slate-600 hover:text-blue-600 font-medium">Experience</a>
+            <a href="#leadership" class="block py-2 text-slate-600 hover:text-blue-600 font-medium">Leadership</a>
+            <a href="#contact" class="block py-2 text-slate-600 hover:text-blue-600 font-medium">Contact</a>
+        </div>
+    </header>
+
+    <section id="hero" class="pt-12 pb-20 md:pt-16 md:pb-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Hero Text Left -->
+                <div class="lg:col-span-7 space-y-6">
+                    <!-- Status Badge -->
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-blue-200 bg-blue-50 text-blue-700 text-xs font-semibold">
+                        <span class="w-2 h-2 rounded-full bg-blue-600 animate-ping"></span>
+                        <span>B.Com (Hons) @ Delhi University | Google Student Ambassador '26</span>
+                    </div>
+
+                    <!-- Main Headline -->
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-tight">
+                        Transforming Raw Data into <span class="gradient-text">Actionable Strategy</span>
+                    </h1>
+
+                    <!-- Description -->
+                    <p class="text-slate-600 text-base sm:text-lg max-w-2xl leading-relaxed">
+                        Data-driven analytics professional specializing in <strong class="text-slate-900 font-semibold">SQL, MS Excel, Power BI, and Tableau</strong>. Experienced in financial record reconciliation, data cleaning, and creating interactive analytics dashboards that solve real-world business challenges.
+                    </p>
+
+                    <!-- Contact Details Badges -->
+                    <div class="flex flex-wrap gap-2.5 pt-2 text-xs text-slate-700 font-medium">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200">
+                            <i class="fa-solid fa-location-dot text-blue-600"></i> Delhi, India
+                        </span>
+                        <a href="mailto:sumitkumarsingh2205@gmail.com" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-colors">
+                            <i class="fa-solid fa-envelope text-blue-600"></i> sumitkumarsingh2205@gmail.com
+                        </a>
+                        <a href="tel:+919625316679" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-colors">
+                            <i class="fa-solid fa-phone text-blue-600"></i> +91 9625316679
+                        </a>
+                    </div>
+
+                    <!-- Call To Actions -->
+                    <div class="flex flex-wrap items-center gap-4 pt-4">
+                        <a href="#projects" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-md shadow-blue-500/20 transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
+                            View Analytics Projects <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/i1amsumit" target="_blank" rel="noopener noreferrer" class="px-6 py-3 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-800 font-semibold text-sm transition-all flex items-center gap-2">
+                            <i class="fa-brands fa-linkedin text-blue-600"></i> LinkedIn Profile
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hero Metrics Card Right -->
+                <div class="lg:col-span-5">
+                    <div class="clean-card rounded-2xl p-6 relative border border-slate-200 bg-white">
+                        <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-full bg-slate-300"></div>
+                                <div class="w-3 h-3 rounded-full bg-slate-300"></div>
+                                <div class="w-3 h-3 rounded-full bg-slate-300"></div>
+                                <span class="text-xs text-slate-500 font-mono ml-1">analytics_kpi_overview.sql</span>
+                            </div>
+                            <span class="text-xs text-blue-700 font-semibold bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200">
+                                Verified Analytics
+                            </span>
+                        </div>
+
+                        <!-- Core Highlights Grid -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                                <p class="text-xs text-slate-500 font-medium">Cleaned & Analyzed</p>
+                                <p class="text-2xl font-bold text-slate-900 mt-1">100K+</p>
+                                <p class="text-[11px] text-blue-600 font-medium mt-0.5">Ride booking records</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                                <p class="text-xs text-slate-500 font-medium">Financial Records</p>
+                                <p class="text-2xl font-bold text-slate-900 mt-1">750+</p>
+                                <p class="text-[11px] text-slate-600 mt-0.5">Reconciled across 5 branches</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                                <p class="text-xs text-slate-500 font-medium">Client Projects</p>
+                                <p class="text-2xl font-bold text-slate-900 mt-1">50+</p>
+                                <p class="text-[11px] text-slate-600 mt-0.5">Invoicing & billing control</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                                <p class="text-xs text-slate-500 font-medium">Campus Outreach</p>
+                                <p class="text-2xl font-bold text-slate-900 mt-1">100+</p>
+                                <p class="text-[11px] text-slate-600 mt-0.5">Students engaged in AI</p>
+                            </div>
+                        </div>
+
+                        <!-- Light Code Terminal Mock -->
+                        <div class="mt-4 p-3.5 rounded-xl bg-slate-900 font-mono text-xs text-slate-200 border border-slate-800">
+                            <div class="flex justify-between text-[11px] text-slate-400 mb-1.5">
+                                <span>Query Output: Ola_Ride_KPIs</span>
+                                <span class="text-emerald-400">Success 200ms</span>
+                            </div>
+                            <p class="text-blue-300"><span class="text-purple-400">SELECT</span> status, <span class="text-amber-300">COUNT</span>(*) <span class="text-purple-400">AS</span> total_rides</p>
+                            <p class="text-slate-300"><span class="text-purple-400">FROM</span> rides_db <span class="text-purple-400">GROUP BY</span> status;</p>
+                            <p class="text-emerald-400 mt-1.5 font-sans font-medium text-[11px]">✓ Dashboard Live (5 Interactive Pages)</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-16 border-t border-b border-slate-200 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-blue-600">Background & Education</h2>
+                <h3 class="text-3xl font-bold text-slate-900 mt-1">Driven by Numbers, Powered by Insights</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Education Card -->
+                <div class="clean-card p-6 rounded-2xl">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 text-xl mb-4">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <span class="text-xs font-semibold text-blue-600">Aug 2024 - May 2027</span>
+                    <h4 class="text-lg font-bold text-slate-900 mt-1">B.Com (Hons)</h4>
+                    <p class="text-sm font-semibold text-slate-700">Maharaja Agrasen College</p>
+                    <p class="text-xs text-slate-500 mt-0.5">University of Delhi, India</p>
+                    <div class="mt-4 pt-4 border-t border-slate-100 text-xs text-slate-600 leading-relaxed">
+                        Focused on corporate finance, data analytics, financial accounting principles, and quantitative decision-making.
+                    </div>
+                </div>
+
+                <!-- Global Programs Card -->
+                <div class="clean-card p-6 rounded-2xl">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 text-xl mb-4">
+                        <i class="fa-solid fa-earth-americas"></i>
+                    </div>
+                    <span class="text-xs font-semibold text-blue-600">McKinsey & Co.</span>
+                    <h4 class="text-lg font-bold text-slate-900 mt-1">McKinsey Forward Program 2026</h4>
+                    <p class="text-sm font-semibold text-slate-700">Business Model & Strategy</p>
+                    <p class="text-xs text-slate-500 mt-0.5">Global Strategy Simulation</p>
+                    <div class="mt-4 pt-4 border-t border-slate-100 text-xs text-slate-600 leading-relaxed">
+                        Hypothesis-driven thinking, problem solving, stakeholder management, and data-backed business strategy execution.
+                    </div>
+                </div>
+
+                <!-- Google Student Ambassador Card -->
+                <div class="clean-card p-6 rounded-2xl">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 text-xl mb-4">
+                        <i class="fa-brands fa-google"></i>
+                    </div>
+                    <span class="text-xs font-semibold text-blue-600">May 2026 - Present</span>
+                    <h4 class="text-lg font-bold text-slate-900 mt-1">Google Student Ambassador</h4>
+                    <p class="text-sm font-semibold text-slate-700">Campus Leadership & Outreach</p>
+                    <p class="text-xs text-slate-500 mt-0.5">Google Gemini Evangelist</p>
+                    <div class="mt-4 pt-4 border-t border-slate-100 text-xs text-slate-600 leading-relaxed">
+                        Led 3+ outreach campaigns, engaging over 100+ university students through hands-on AI workshops and awareness initiatives.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-blue-600">Technical Expertise</h2>
+                <h3 class="text-3xl font-bold text-slate-900 mt-1">Tools & Core Competencies</h3>
+                <p class="text-sm text-slate-600 mt-2">Equipped with analytical software proficiency and professional competencies for finance and operations.</p>
+            </div>
+
+            <!-- Skill Filter Tabs -->
+            <div class="flex justify-center flex-wrap gap-2 mb-10" id="skillFilterBar">
+                <button onclick="filterSkills('all')" class="skill-tab active px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 text-white transition-colors">
+                    All Skills
+                </button>
+                <button onclick="filterSkills('tools')" class="skill-tab px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors">
+                    Tools & Software
+                </button>
+                <button onclick="filterSkills('analytics')" class="skill-tab px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors">
+                    Analytics & Modeling
+                </button>
+                <button onclick="filterSkills('professional')" class="skill-tab px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors">
+                    Finance & Professional
+                </button>
+                <button onclick="filterSkills('certifications')" class="skill-tab px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors">
+                    Certifications
+                </button>
+            </div>
+
+            <!-- Skills Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="skillsContainer">
+                
+                <!-- Skill: SQL -->
+                <div class="skill-card tools clean-card p-5 rounded-2xl">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-database"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-900">SQL</h4>
+                                <span class="text-[11px] text-slate-500">Database Queries</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-semibold text-blue-600">Advanced</span>
+                    </div>
+                    <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-blue-600 h-full rounded-full" style="width: 90%;"></div>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-2">Views, CTEs, Aggregations, Joins, Data Modeling</p>
+                </div>
+
+                <!-- Skill: MS Excel -->
+                <div class="skill-card tools clean-card p-5 rounded-2xl">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-file-excel"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-900">MS Excel</h4>
+                                <span class="text-[11px] text-slate-500">Spreadsheets</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-semibold text-emerald-600">Expert</span>
+                    </div>
+                    <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-emerald-600 h-full rounded-full" style="width: 95%;"></div>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-2">VLOOKUP, Pivot Tables, Expense Trackers, Reconciliations</p>
+                </div>
+
+                <!-- Skill: Power BI -->
+                <div class="skill-card tools clean-card p-5 rounded-2xl">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-chart-simple"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-900">Power BI</h4>
+                                <span class="text-[11px] text-slate-500">Dashboards</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-semibold text-amber-600">Advanced</span>
+                    </div>
+                    <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-amber-600 h-full rounded-full" style="width: 88%;"></div>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-2">DAX Measures, Data Modeling, Multi-page BI Dashboards</p>
+                </div>
+
+                <!-- Skill: Tableau -->
+                <div class="skill-card tools clean-card p-5 rounded-2xl">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-chart-pie"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-900">Tableau</h4>
+                                <span class="text-[11px] text-slate-500">Visual Stories</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-semibold text-cyan-600">Proficient</span>
+                    </div>
+                    <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-cyan-600 h-full rounded-full" style="width: 80%;"></div>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-2">Data Visualizations, Trend Analytics, Dynamic Dashboards</p>
+                </div>
+
+                <!-- Skill: Data Analytics -->
+                <div class="skill-card analytics clean-card p-5 rounded-2xl">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm">
+                            <i class="fa-solid fa-broom"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-slate-900">Data Cleaning & Prep</h4>
+                    </div>
+                    <p class="text-xs text-slate-600">Cleaning 100K+ datasets, outlier treatment, missing value handling.</p>
+                </div>
+
+                <!-- Skill: Business Analysis -->
+                <div class="skill-card analytics clean-card p-5 rounded-2xl">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm">
+                            <i class="fa-solid fa-briefcase"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-slate-900">Business Analysis</h4>
+                    </div>
+                    <p class="text-xs text-slate-600">Market research, industry value chain analysis, risk assessment.</p>
+                </div>
+
+                <!-- Skill: Tax Invoicing & AP -->
+                <div class="skill-card professional clean-card p-5 rounded-2xl">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center text-sm">
+                            <i class="fa-solid fa-receipt"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-slate-900">Tax Invoicing & AP</h4>
+                    </div>
+                    <p class="text-xs text-slate-600">Accounts Payable, vendor reconciliations, billing verification.</p>
+                </div>
+
+                <!-- Skill: Critical Thinking -->
+                <div class="skill-card professional clean-card p-5 rounded-2xl">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-sm">
+                            <i class="fa-solid fa-brain"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-slate-900">Problem Solving</h4>
+                    </div>
+                    <p class="text-xs text-slate-600">Stakeholder management, teamwork, meticulous attention to detail.</p>
+                </div>
+
+                <!-- Certification Banner -->
+                <div class="skill-card certifications lg:col-span-4 clean-card p-6 rounded-2xl border-blue-200 bg-blue-50/50">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center text-2xl shadow-sm">
+                                <i class="fa-brands fa-google"></i>
+                            </div>
+                            <div>
+                                <div class="inline-block px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px] font-bold uppercase tracking-wider mb-1">
+                                    Verified Professional Certification
+                                </div>
+                                <h4 class="text-base font-bold text-slate-900">Google Data Analytics Professional Certificate</h4>
+                                <p class="text-xs text-slate-600">Issued by Google • Covering SQL, R, Data Cleaning, Data Visualization & Business Case Studies</p>
+                            </div>
+                        </div>
+                        <a href="https://www.coursera.org/account/accomplishments/verify/Q9GBGEPB2J67?utm_source=android&utm_medium=certificate&utm_content=cert_image&utm_campaign=sharing_cta&utm_product=course" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-all">
+                            Verify Credential <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-20 bg-slate-50 border-t border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-blue-600">Featured Analytics Projects</h2>
+                <h3 class="text-3xl font-bold text-slate-900 mt-1">End-to-End Analytics & Case Studies</h3>
+                <p class="text-sm text-slate-600 mt-2">Interactive dashboards, SQL queries, financial modeling, and strategic market research.</p>
+            </div>
+
+            <!-- Project 1: Ola Data Analytics Dashboard -->
+            <div class="clean-card rounded-2xl p-6 md:p-8 mb-10 shadow-sm bg-white border border-slate-200">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    
+                    <!-- Details Column -->
+                    <div class="lg:col-span-5 space-y-4">
+                        <div class="flex items-center gap-2">
+                            <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold">
+                                End-to-End BI Solution
+                            </span>
+                            <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-xs font-semibold">
+                                100K+ Dataset
+                            </span>
+                        </div>
+
+                        <h3 class="text-2xl font-bold text-slate-900">Ola Data Analytics Dashboard</h3>
+                        <p class="text-xs font-semibold text-slate-500">Tech Stack: SQL • MS Excel • Power BI • DAX Measures</p>
+
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Cleaned over <strong>100,000+ ride booking records</strong> in Excel, performed relational data modeling using SQL views, and developed an interactive <strong>5-page Power BI dashboard</strong> for operational KPI tracking.
+                        </p>
+
+                        <!-- Highlights -->
+                        <div class="space-y-2.5 pt-2">
+                            <div class="flex items-start gap-2 text-xs text-slate-700">
+                                <i class="fa-solid fa-circle-check text-blue-600 mt-0.5"></i>
+                                <span><strong>SQL Views & Aggregations:</strong> Structured queries for booking status, cancellation reasons, revenue, and vehicle ratings.</span>
+                            </div>
+                            <div class="flex items-start gap-2 text-xs text-slate-700">
+                                <i class="fa-solid fa-circle-check text-blue-600 mt-0.5"></i>
+                                <span><strong>DAX Measures:</strong> Formulated custom DAX measures for dynamic KPI tracking (cancellation rate, revenue per ride, vehicle utilization).</span>
+                            </div>
+                            <div class="flex items-start gap-2 text-xs text-slate-700">
+                                <i class="fa-solid fa-circle-check text-blue-600 mt-0.5"></i>
+                                <span><strong>5 Interactive Pages:</strong> Executive Summary, Ride Volume & Status, Cancellation Insights, Payment Breakdown, Vehicle Performance.</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="pt-4 flex items-center gap-3">
+                            <button onclick="toggleSqlCodeModal()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 text-xs font-semibold flex items-center gap-2 transition-colors">
+                                <i class="fa-solid fa-code text-blue-600"></i> View SQL Queries
+                            </button>
+                            <a href="https://github.com" target="_blank" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold flex items-center gap-2 transition-colors">
+                                <i class="fa-brands fa-github"></i> GitHub Repository
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Chart Simulation Canvas -->
+                    <div class="lg:col-span-7 bg-slate-50 rounded-2xl p-5 border border-slate-200">
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-chart-column text-blue-600 text-sm"></i>
+                                <span class="text-xs font-bold text-slate-800">Live Power BI Simulation Widget</span>
+                            </div>
+                            <div class="flex gap-1 text-[11px]">
+                                <button onclick="switchOlaView('status')" id="btnOlaStatus" class="px-2.5 py-1 rounded-lg bg-blue-600 text-white font-semibold">Status</button>
+                                <button onclick="switchOlaView('vehicle')" id="btnOlaVehicle" class="px-2.5 py-1 rounded-lg bg-slate-200 text-slate-700 hover:bg-slate-300 font-semibold">Vehicle Revenue</button>
+                                <button onclick="switchOlaView('payment')" id="btnOlaPayment" class="px-2.5 py-1 rounded-lg bg-slate-200 text-slate-700 hover:bg-slate-300 font-semibold">Payment Types</button>
+                            </div>
+                        </div>
+
+                        <!-- Visual KPI Cards -->
+                        <div class="grid grid-cols-3 gap-3 mb-4">
+                            <div class="bg-white p-3 rounded-xl border border-slate-200 text-center">
+                                <span class="text-[10px] text-slate-500 font-medium block">Total Rides</span>
+                                <span class="text-base font-extrabold text-blue-600">100,000+</span>
+                            </div>
+                            <div class="bg-white p-3 rounded-xl border border-slate-200 text-center">
+                                <span class="text-[10px] text-slate-500 font-medium block">Completion Rate</span>
+                                <span class="text-base font-extrabold text-emerald-600">62%</span>
+                            </div>
+                            <div class="bg-white p-3 rounded-xl border border-slate-200 text-center">
+                                <span class="text-[10px] text-slate-500 font-medium block">Avg Rating</span>
+                                <span class="text-base font-extrabold text-amber-600">4.6 ★</span>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Chart Canvas -->
+                        <div class="relative h-60 w-full">
+                            <canvas id="olaChart"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Project 2: EV Battery Chemistry Case Study -->
+            <div class="clean-card rounded-2xl p-6 md:p-8 shadow-sm bg-white border border-slate-200">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    
+                    <!-- Left Details Column -->
+                    <div class="lg:col-span-5 space-y-4">
+                        <div class="flex items-center gap-2">
+                            <span class="px-3 py-1 rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200 text-xs font-semibold">
+                                Strategic Research
+                            </span>
+                            <span class="px-3 py-1 rounded-full bg-purple-50 text-purple-700 border border-purple-200 text-xs font-semibold">
+                                UN SDGs Aligned
+                            </span>
+                        </div>
+
+                        <h3 class="text-2xl font-bold text-slate-900">Case Study: Future of EV Battery Chemistry</h3>
+                        <p class="text-xs font-semibold text-slate-500">Data Sources: McKinsey & Co • IEA • UNDP</p>
+
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Conducted an in-depth global EV battery ecosystem research study. Analyzed battery chemistry trends (LFP, NMC, Solid-State), mineral supply chain vulnerabilities (Lithium, Cobalt), recycling infrastructure economics, and sustainable transition frameworks.
+                        </p>
+
+                        <!-- Key Pillars -->
+                        <div class="grid grid-cols-2 gap-3 pt-2">
+                            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                                <span class="text-xs font-bold text-cyan-700 block">Value Chain Analysis</span>
+                                <span class="text-[11px] text-slate-600">Raw materials mining to recycling economics</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                                <span class="text-xs font-bold text-purple-700 block">SDG Alignment</span>
+                                <span class="text-[11px] text-slate-600">SDG 7 (Clean Energy) & SDG 13 (Climate Action)</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <a href="https://github.com" target="_blank" class="inline-flex items-center gap-2 text-xs font-bold text-blue-600 hover:text-blue-700">
+                                View Case Study on GitHub <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Interactive EV Battery Analysis Visual -->
+                    <div class="lg:col-span-7 bg-slate-50 rounded-2xl p-5 border border-slate-200">
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-bolt text-blue-600 text-sm"></i>
+                                <span class="text-xs font-bold text-slate-800">Global Battery Chemistries Projection Matrix</span>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Battery Chart -->
+                        <div class="relative h-60 w-full">
+                            <canvas id="evBatteryChart"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="experience" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-blue-600">Career Trajectory</h2>
+                <h3 class="text-3xl font-bold text-slate-900 mt-1">Work Experience</h3>
+                <p class="text-sm text-slate-600 mt-2">Hands-on practical experience in financial operations, data reconciliation, and billing control.</p>
+            </div>
+
+            <!-- Vertical Timeline Container -->
+            <div class="relative border-l-2 border-slate-200 max-w-4xl mx-auto pl-6 sm:pl-8 space-y-12">
+
+                <!-- Experience Item 1: Learning Routes -->
+                <div class="relative group">
+                    <div class="absolute -left-[31px] sm:-left-[39px] top-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-600 border-4 border-white flex items-center justify-center text-white text-xs sm:text-sm font-bold shadow-md">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+
+                    <div class="clean-card p-6 rounded-2xl">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100">
+                            <div>
+                                <h4 class="text-xl font-bold text-slate-900">Finance Intern</h4>
+                                <p class="text-sm font-semibold text-blue-600">Learning Routes • Gurgaon, Haryana</p>
+                            </div>
+                            <span class="inline-block px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold w-fit">
+                                July 2025 – Sept 2025
+                            </span>
+                        </div>
+
+                        <ul class="mt-4 space-y-2.5 text-xs sm:text-sm text-slate-700">
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-angle-right text-blue-600 mt-1"></i>
+                                <span>Validated and analyzed <strong>250+ financial records</strong> using MS Excel, ensuring data accuracy and enabling timely vendor payment processing.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-angle-right text-blue-600 mt-1"></i>
+                                <span>Managed Accounts Payable (AP) activities, including invoice verification, vendor statement reconciliations, and payment schedule tracking.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-angle-right text-blue-600 mt-1"></i>
+                                <span>Analyzed and reconciled <strong>500+ financial transactions across 5 branches</strong> to improve overall reporting precision.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-angle-right text-blue-600 mt-1"></i>
+                                <span>Maintained Excel-based expense trackers, sales reports, and financial logs leveraging advanced functions like <strong>VLOOKUP and Pivot Tables</strong>.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-angle-right text-blue-600 mt-1"></i>
+                                <span>Supported the clearance of a 1-month Accounts Payable backlog by auditing invoices, organizing documentation, and prioritizing workflow execution.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Experience Item 2: Singh EzCad -->
+                <div class="relative group">
+                    <div class="absolute -left-[31px] sm:-left-[39px] top-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-600 border-4 border-white flex items-center justify-center text-white text-xs sm:text-sm font-bold shadow-md">
+                        <i class="fa-solid fa-calculator"></i>
+                    </div>
+
+                    <div class="clean-card p-6 rounded-2xl">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100">
+                            <div>
+                                <h4 class="text-xl font-bold text-slate-900">Finance Operations Intern</h4>
+                                <p class="text-sm font-semibold text-blue-600">Singh EzCad • Delhi, India</p>
+                            </div>
+                            <span class="inline-block px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold w-fit">
+                                Nov 2023 – Aug 2024
+                            </span>
+                        </div>
+
+                        <ul class="mt-4 space-y-2.5 text-xs sm:text-sm text-slate-700">
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-angle-right text-blue-600 mt-1"></i>
+                                <span>Monitored project billing status and delivery milestones for <strong>50+ client projects</strong>, improving financial visibility and receivables monitoring.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-angle-right text-blue-600 mt-1"></i>
+                                <span>Managed invoicing and receivables for <strong>30+ client projects</strong>, ensuring accurate billing records and supporting timely cash collections.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-angle-right text-blue-600 mt-1"></i>
+                                <span>Utilized MS Excel to analyze financial and operational data, monitoring project costs and tracking <strong>10+ operational KPIs</strong> to aid executive decision-making.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="leadership" class="py-20 bg-slate-50 border-t border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-blue-600">Leadership & Recognition</h2>
+                <h3 class="text-3xl font-bold text-slate-900 mt-1">Extracurricular Impact & Achievements</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Google Student Ambassador -->
+                <div class="clean-card p-6 rounded-2xl flex gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex-shrink-0 flex items-center justify-center text-blue-600 text-2xl">
+                        <i class="fa-brands fa-google"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs text-blue-600 font-semibold">May 2026 - Present</span>
+                        <h4 class="text-lg font-bold text-slate-900">Google Student Ambassador 2026</h4>
+                        <p class="text-xs font-semibold text-slate-700">Leadership & Public Speaking</p>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            Represented Google Gemini on campus. Spearheaded 3+ outreach campaigns, conducting engaging AI workshops for over 100+ university students.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Commerce Placement Cell -->
+                <div class="clean-card p-6 rounded-2xl flex gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 flex-shrink-0 flex items-center justify-center text-emerald-600 text-2xl">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs text-emerald-700 font-semibold">Jan 2025 - Present</span>
+                        <h4 class="text-lg font-bold text-slate-900">Manager - Commerce Placement Cell</h4>
+                        <p class="text-xs font-semibold text-slate-700">Maharaja Agrasen College, DU</p>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            Coordinated placement drives, corporate communication, resume building sessions, and campus drive logistics for commerce undergraduates.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Markos Marketing Society -->
+                <div class="clean-card p-6 rounded-2xl flex gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 border border-purple-100 flex-shrink-0 flex items-center justify-center text-purple-600 text-2xl">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs text-purple-700 font-semibold">Oct 2025 - May 2026</span>
+                        <h4 class="text-lg font-bold text-slate-900">Senior Manager - Markos Marketing Society</h4>
+                        <p class="text-xs font-semibold text-slate-700">University of Delhi</p>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            Led marketing event logistics, digital campaign management, sponsor outreach, and team leadership for inter-college competitions.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Debating & Meritorious Student Prize -->
+                <div class="clean-card p-6 rounded-2xl flex gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex-shrink-0 flex items-center justify-center text-amber-600 text-2xl">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs text-amber-700 font-semibold">2021 & 2025 - 2026</span>
+                        <h4 class="text-lg font-bold text-slate-900">Debater & Meritorious Scholar</h4>
+                        <p class="text-xs font-semibold text-slate-700">Chakraview Debating Society & Academic Honor</p>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            Active debater analyzing socio-economic policies. Recipient of the prestigious <strong>Meritorious Student Prize</strong> (10th Class, New Delhi, 2021).
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                <!-- Contact Info Left -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div>
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-blue-600">Get in Touch</h2>
+                        <h3 class="text-3xl font-bold text-slate-900 mt-1">Let's Connect & Collaborate</h3>
+                        <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+                            Open for Data Analyst, Business Analyst, and Finance roles or internships. Feel free to reach out directly via email or call.
+                        </p>
+                    </div>
+
+                    <!-- Contact Detail Cards -->
+                    <div class="space-y-3">
+                        <div class="clean-card p-4 rounded-xl flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-slate-500 font-medium">Email Address</p>
+                                    <p class="text-xs font-bold text-slate-800">sumitkumarsingh2205@gmail.com</p>
+                                </div>
+                            </div>
+                            <button onclick="copyToClipboard('sumitkumarsingh2205@gmail.com', 'Email copied!')" class="p-2 text-xs text-slate-500 hover:text-blue-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors" title="Copy Email">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="clean-card p-4 rounded-xl flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-slate-500 font-medium">Phone / WhatsApp</p>
+                                    <p class="text-xs font-bold text-slate-800">+91 9625316679</p>
+                                </div>
+                            </div>
+                            <button onclick="copyToClipboard('+919625316679', 'Phone copied!')" class="p-2 text-xs text-slate-500 hover:text-blue-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors" title="Copy Phone">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="clean-card p-4 rounded-xl flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                                    <i class="fa-brands fa-linkedin"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-slate-500 font-medium">LinkedIn Profile</p>
+                                    <p class="text-xs font-bold text-slate-800">linkedin.com/in/i1amsumit</p>
+                                </div>
+                            </div>
+                            <a href="https://linkedin.com/in/i1amsumit" target="_blank" class="p-2 text-xs text-slate-500 hover:text-blue-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Message Form -->
+                <div class="lg:col-span-7">
+                    <form onsubmit="handleFormSubmit(event)" class="clean-card p-6 md:p-8 rounded-2xl space-y-4">
+                        <h4 class="text-lg font-bold text-slate-900 mb-2">Send a Message</h4>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Your Name</label>
+                                <input type="text" required placeholder="e.g. Rahul Sharma" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Your Email</label>
+                                <input type="email" required placeholder="rahul@example.com" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Subject</label>
+                            <input type="text" required placeholder="Opportunity / Project Collaboration" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Message</label>
+                            <textarea rows="4" required placeholder="Hi Sumit, I reviewed your analytics portfolio and would like to discuss..." class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-blue-600 focus:bg-white transition-all resize-none"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2 shadow-md shadow-blue-500/10">
+                            <i class="fa-solid fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="mt-16 pt-8 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+                <p>© 2026 Sumit Kumar Singh. All rights reserved.</p>
+                <div class="flex items-center gap-6">
+                    <a href="https://linkedin.com/in/i1amsumit" target="_blank" class="hover:text-blue-600 transition-colors"><i class="fa-brands fa-linkedin text-sm"></i> LinkedIn</a>
+                    <a href="https://github.com" target="_blank" class="hover:text-blue-600 transition-colors"><i class="fa-brands fa-github text-sm"></i> GitHub</a>
+                    <a href="mailto:sumitkumarsingh2205@gmail.com" class="hover:text-blue-600 transition-colors"><i class="fa-solid fa-envelope text-sm"></i> Email</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="sqlModal" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white border border-slate-200 rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col shadow-2xl">
+            <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-database text-blue-600 text-sm"></i>
+                    <span class="text-xs font-mono font-bold text-slate-800">Ola_Ride_Analytics_Queries.sql</span>
+                </div>
+                <button onclick="toggleSqlCodeModal()" class="text-slate-400 hover:text-slate-700 text-base">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-5 overflow-y-auto font-mono text-xs text-slate-800 space-y-4 bg-slate-900 text-slate-200">
+                <div>
+                    <span class="text-slate-400">// 1. Retrieve booking status counts</span>
+                    <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-blue-300 mt-1">
+CREATE VIEW Ride_Status_Summary AS
+SELECT 
+    Booking_Status,
+    COUNT(Booking_ID) AS Total_Rides,
+    ROUND(COUNT(Booking_ID) * 100.0 / (SELECT COUNT(*) FROM Ride_Bookings), 2) AS Percentage
+FROM Ride_Bookings
+GROUP BY Booking_Status;</pre>
+                </div>
+
+                <div>
+                    <span class="text-slate-400">// 2. Calculate Revenue & Avg Distance by Vehicle Type</span>
+                    <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-emerald-300 mt-1">
+CREATE VIEW Vehicle_Performance AS
+SELECT 
+    Vehicle_Type,
+    SUM(Booking_Value) AS Total_Revenue,
+    AVG(Ride_Distance) AS Avg_Distance_KM,
+    AVG(Customer_Rating) AS Avg_Rating
+FROM Ride_Bookings
+WHERE Booking_Status = 'Success'
+GROUP BY Vehicle_Type;</pre>
+                </div>
+
+                <div>
+                    <span class="text-slate-400">// 3. Customer Cancellation Breakdown</span>
+                    <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-amber-300 mt-1">
+SELECT 
+    Canceled_Rides_by_Customer,
+    COUNT(*) AS Cancellation_Count
+FROM Ride_Bookings
+WHERE Canceled_Rides_by_Customer IS NOT NULL
+GROUP BY Canceled_Rides_by_Customer
+ORDER BY Cancellation_Count DESC;</pre>
+                </div>
+            </div>
+            <div class="p-3 border-t border-slate-200 bg-slate-50 flex justify-end">
+                <button onclick="copyToClipboard('CREATE VIEW Ride_Status_Summary AS SELECT Booking_Status, COUNT(Booking_ID)...', 'SQL script copied!')" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold">
+                    Copy SQL Script
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="resumeModal" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white border border-slate-200 rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
+            <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+                <span class="text-xs font-bold text-slate-900">Sumit Kumar Singh - Resume Preview</span>
+                <button onclick="closeResumeModal()" class="text-slate-400 hover:text-slate-700 text-base">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-6 text-xs text-slate-700 bg-white">
+                <!-- Resume Header -->
+                <div class="border-b border-slate-200 pb-4">
+                    <h2 class="text-xl font-extrabold text-slate-900 uppercase">Sumit Kumar Singh</h2>
+                    <p class="text-blue-600 font-bold mt-0.5">B.Com (Hons) Student • Data & Finance Analytics</p>
+                    <p class="text-slate-500 text-[11px] mt-1">Delhi, India | +91 9625316679 | sumitkumarsingh2205@gmail.com | linkedin.com/in/i1amsumit</p>
+                </div>
+
+                <!-- Summary -->
+                <div>
+                    <h3 class="font-bold text-slate-900 uppercase border-b border-slate-200 pb-1 mb-2 text-[11px] text-blue-600">Summary</h3>
+                    <p class="text-slate-700 leading-relaxed">
+                        Data-driven B.Com (Hons) student with hands-on experience in SQL, Excel, Power BI, and Tableau. Built end-to-end data analytics projects involving data cleaning, visualization, and business insights while applying analytical thinking to solve real-world business problems.
+                    </p>
+                </div>
+
+                <!-- Education -->
+                <div>
+                    <h3 class="font-bold text-slate-900 uppercase border-b border-slate-200 pb-1 mb-2 text-[11px] text-blue-600">Education</h3>
+                    <div class="flex justify-between font-semibold text-slate-900">
+                        <span>Maharaja Agrasen College, Delhi University (B.Com Hons)</span>
+                        <span>Aug 2024 - May 2027</span>
+                    </div>
+                </div>
+
+                <!-- Technical Skills -->
+                <div>
+                    <h3 class="font-bold text-slate-900 uppercase border-b border-slate-200 pb-1 mb-2 text-[11px] text-blue-600">Technical Skills</h3>
+                    <p class="mb-1"><strong>Tools:</strong> SQL, MS Excel, Power BI, Tableau, Google Workspace, PowerPoint</p>
+                    <p class="mb-1"><strong>Analytics:</strong> Data Analysis, Data Cleaning, Business Analysis, Market Research, Visualization, Dashboard Development</p>
+                    <p><strong>Certifications:</strong> <a href="https://www.coursera.org/account/accomplishments/verify/Q9GBGEPB2J67?utm_source=android&utm_medium=certificate&utm_content=cert_image&utm_campaign=sharing_cta&utm_product=course" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Google Data Analytics Professional Certificate – Google <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a></p>
+                </div>
+
+                <!-- Experience -->
+                <div>
+                    <h3 class="font-bold text-slate-900 uppercase border-b border-slate-200 pb-1 mb-2 text-[11px] text-blue-600">Work Experience</h3>
+                    <div class="mb-3">
+                        <div class="flex justify-between font-semibold text-slate-900">
+                            <span>Finance Intern | Learning Routes, Gurgaon</span>
+                            <span>July 2025 – Sept 2025</span>
+                        </div>
+                        <ul class="list-disc list-inside text-slate-600 space-y-1 mt-1">
+                            <li>Validated and analyzed 250+ financial records using Excel.</li>
+                            <li>Managed Accounts Payable activities, vendor reconciliations, and payment tracking.</li>
+                            <li>Reconciled 500+ financial transactions across 5 branches.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="flex justify-between font-semibold text-slate-900">
+                            <span>Finance Operations Intern | Singh EzCad, Delhi</span>
+                            <span>Nov 2023 – Aug 2024</span>
+                        </div>
+                        <ul class="list-disc list-inside text-slate-600 space-y-1 mt-1">
+                            <li>Monitored project billing status and delivery milestones for 50+ client projects.</li>
+                            <li>Managed invoicing & receivables for 30+ client projects.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="p-3 border-t border-slate-200 bg-slate-50 flex justify-end gap-3">
+                <button onclick="window.print()" class="px-4 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-semibold">
+                    <i class="fa-solid fa-print"></i> Print Resume
+                </button>
+                <button onclick="closeResumeModal()" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold">
+                    Close Preview
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Mobile Menu Toggle ---
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileDrawer = document.getElementById('mobileDrawer');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileDrawer.classList.toggle('hidden');
+        });
+
+        // --- Skill Filter Logic ---
+        function filterSkills(category) {
+            const tabs = document.querySelectorAll('.skill-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('bg-blue-600', 'text-white');
+                tab.classList.add('bg-slate-100', 'text-slate-700');
+            });
+            event.currentTarget.classList.remove('bg-slate-100', 'text-slate-700');
+            event.currentTarget.classList.add('bg-blue-600', 'text-white');
+
+            const cards = document.querySelectorAll('.skill-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.classList.contains(category)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // --- Toast Notification Handler ---
+        function showToast(message) {
+            const existingToast = document.getElementById('toast');
+            if (existingToast) existingToast.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'toast';
+            toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white px-5 py-2.5 rounded-xl shadow-2xl text-xs font-semibold flex items-center gap-2 toast-animate';
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> <span>${message}</span>`;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // --- Copy to Clipboard Utility ---
+        function copyToClipboard(text, successMsg) {
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast(successMsg || 'Copied to clipboard!');
+        }
+
+        // --- Modal Toggles ---
+        function toggleSqlCodeModal() {
+            const modal = document.getElementById('sqlModal');
+            modal.classList.toggle('hidden');
+        }
+
+        function openResumeModal() {
+            document.getElementById('resumeModal').classList.remove('hidden');
+        }
+
+        function closeResumeModal() {
+            document.getElementById('resumeModal').classList.add('hidden');
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            showToast('Thank you! Your message has been sent.');
+            e.target.reset();
+        }
+
+        // --- Chart.js Light-Themed Visualizations ---
+        let olaChartInstance = null;
+
+        const olaChartData = {
+            status: {
+                type: 'doughnut',
+                labels: ['Completed', 'Canceled by Driver', 'Canceled by Customer', 'Driver Not Found'],
+                datasets: [{
+                    data: [62, 18, 12, 8],
+                    backgroundColor: ['#059669', '#d97706', '#dc2626', '#64748b'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            vehicle: {
+                type: 'bar',
+                labels: ['Prime Sedan', 'Mini', 'Auto', 'Bike', 'Prime SUV'],
+                datasets: [{
+                    label: 'Revenue (in ₹ Lakhs)',
+                    data: [42, 38, 25, 18, 31],
+                    backgroundColor: '#2563eb',
+                    borderRadius: 6
+                }]
+            },
+            payment: {
+                type: 'pie',
+                labels: ['UPI', 'Cash', 'Credit Card', 'Ola Money Wallet'],
+                datasets: [{
+                    data: [48, 30, 15, 7],
+                    backgroundColor: ['#0284c7', '#059669', '#7c3aed', '#d97706'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            }
+        };
+
+        function renderOlaChart(viewType) {
+            const ctx = document.getElementById('olaChart').getContext('2d');
+            if (olaChartInstance) {
+                olaChartInstance.destroy();
+            }
+
+            const config = olaChartData[viewType];
+            olaChartInstance = new Chart(ctx, {
+                type: config.type,
+                data: {
+                    labels: config.labels,
+                    datasets: config.datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#334155',
+                                font: { size: 10, weight: 'bold' }
+                            }
+                        }
+                    },
+                    scales: config.type === 'bar' ? {
+                        x: { ticks: { color: '#475569' }, grid: { display: false } },
+                        y: { ticks: { color: '#475569' }, grid: { color: '#e2e8f0' } }
+                    } : {}
+                }
+            });
+        }
+
+        function switchOlaView(type) {
+            ['btnOlaStatus', 'btnOlaVehicle', 'btnOlaPayment'].forEach(id => {
+                const btn = document.getElementById(id);
+                btn.className = 'px-2.5 py-1 rounded-lg bg-slate-200 text-slate-700 hover:bg-slate-300 font-semibold';
+            });
+
+            if (type === 'status') document.getElementById('btnOlaStatus').className = 'px-2.5 py-1 rounded-lg bg-blue-600 text-white font-semibold';
+            if (type === 'vehicle') document.getElementById('btnOlaVehicle').className = 'px-2.5 py-1 rounded-lg bg-blue-600 text-white font-semibold';
+            if (type === 'payment') document.getElementById('btnOlaPayment').className = 'px-2.5 py-1 rounded-lg bg-blue-600 text-white font-semibold';
+
+            renderOlaChart(type);
+        }
+
+        function renderEvBatteryChart() {
+            const ctx = document.getElementById('evBatteryChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['2022', '2024', '2026 (Est)', '2028 (Proj)', '2030 (Proj)'],
+                    datasets: [
+                        {
+                            label: 'LFP (Lithium Iron Phosphate) Share %',
+                            data: [30, 42, 50, 55, 58],
+                            borderColor: '#0284c7',
+                            backgroundColor: 'rgba(2, 132, 199, 0.08)',
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'NMC (Nickel Manganese) Share %',
+                            data: [60, 50, 40, 32, 25],
+                            borderColor: '#7c3aed',
+                            borderDash: [5, 5],
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Solid-State Tech Adoption %',
+                            data: [1, 3, 8, 13, 17],
+                            borderColor: '#059669',
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#334155', font: { size: 10, weight: 'bold' } }
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#475569' }, grid: { display: false } },
+                        y: { ticks: { color: '#475569' }, grid: { color: '#e2e8f0' } }
+                    }
+                }
+            });
+        }
+
+        // Initialize charts when page finishes loading
+        window.onload = function() {
+            renderOlaChart('status');
+            renderEvBatteryChart();
+        };
+    </script>
+</body>
+</html>
